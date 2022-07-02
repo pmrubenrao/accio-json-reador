@@ -42,7 +42,7 @@ export default {
 
 .transaction-card-warn {
   border-radius: 12px;
-  box-shadow: 0 2px 8px#Ffe72F;
+  box-shadow: 0 2px 8px#ffe72f;
   padding: 1.2rem;
   background-color: #1e1e1e;
 }

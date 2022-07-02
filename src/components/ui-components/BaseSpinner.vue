@@ -11,14 +11,14 @@
 
 <style scoped>
 .spinner {
-  display: Flex;
+  display: flex;
   justify-content: flex-start;
   margin: 0rem 2rem;
   align-items: center;
   width: 100%;
 }
 
-.lds-ellipsist {
+.lds-ellipsis {
   display: inline-block;
   position: relative;
   width: 80px;
@@ -71,10 +71,10 @@
 
 @keyframes lds-ellipsis2 {
   0% {
-    transform: translate(8, 0);
+    transform: translate(0, 0);
   }
   100% {
-    transform: translate (24px, 0);
+    transform: translate(24px, 0);
   }
 }
 </style>

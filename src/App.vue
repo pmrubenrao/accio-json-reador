@@ -9,7 +9,7 @@
               type="radio"
               id="one"
               name="rqid"
-              value="request id"
+              value="request_id"
               v-model="idPicked"
               checked
             />
@@ -22,6 +22,21 @@
               v-model="idPicked"
             />
             <label for="two">Reference ID</label>
+            <input
+              type="radio"
+              id="three"
+              name="rqid"
+              value="consent_id"
+              v-model="idPicked"
+            />
+            <label for="three">ConsID</label>
+            <input
+              type="checkbox"
+              id="sandbox"
+              value="someschema"
+              v-model="dbEnv"
+            />
+            <label for="sb">TestEv</label>
           </div>
           <div class="break"></div>
           <form
@@ -42,8 +57,6 @@
               <base-button>Fetch</base-button>
             </div>
           </form>
-
-          <div><base-button @click="loadRawJSON">RAW</base-button></div>
         </div>
 
         <div v-if="isLoading"><base-spinner></base-spinner></div>
@@ -56,7 +69,7 @@
             >
               <option value="" disabled>Select Event Type</option>
               <option v-for="event in content.data" :key="event">
-                {{ event.EVENT_TYPE }}
+                {{ event.EVENT_TYPE_ROWID }}
               </option>
             </select>
           </div>
@@ -85,6 +98,7 @@
       <event-table-view
         v-if="!isLoading"
         :contentData="content.data"
+        @event-type-table="selectEventTypeTable"
         class="event-table-container"
       ></event-table-view>
 
@@ -96,6 +110,11 @@
         class="transaction-detail-container"
       >
       </event-type-extracter>
+
+      <div>
+        <base-button @click="loadRawJSON" :mode="defaultRaw">RAW</base-button>
+      </div>
+
       <div class="footer">
         <p>
           <a href="mailto:ruben.rao@db.com">
@@ -124,14 +143,16 @@ export default {
       content: '',
       transactionDetails: '',
       eventType: '',
-      eventTemplate: [],
+      // eventTemplate: [],
       eventTypeJson: {},
-      componentkey: 1,
+      componentKey: 1,
       isLoading: false,
       isloadRawJSONFlag: false,
       closedialogFlag: null,
       transactionCardtheme: '',
       idPicked: 'request id',
+      defaultRaw: 'default-raw',
+      dbEnv: [],
     };
   },
 
@@ -139,24 +160,16 @@ export default {
     eventType: {
       async handler() {
         let self = this;
-        await import('./assets/event_template/' + this.eventType + '.js')
-          .then(function (data) {
-            self.eventTemplate = [];
-            self.eventTemplate = data.default;
-          })
-          .catch((e) => {
-            console.log('Template loading FAILED :: ', e);
-          });
 
         this.eventTypeJson = this.content.data.filter(function (field) {
-          if (field.EVENT_TYPE === self.eventType) {
+          if (field.EVENT_TYPE_ROWID === self.eventType) {
             return true;
           } else {
             return false;
           }
         });
         this.eventTypeJson = JSON.parse(this.eventTypeJson[0].ADDITIONAL_DATA);
-        self.componentkey += 1;
+        self.componentKey += 1;
       },
       deep: true,
     },
@@ -169,6 +182,10 @@ export default {
 
     loadRawJSON() {
       this.isloadRawJSONFlag = !this.isloadRawJSONFlag;
+    },
+
+    selectEventTypeTable(evt) {
+      this.eventType = evt;
     },
 
     transactionCard(data) {
@@ -184,16 +201,20 @@ export default {
     async submitRequest() {
       const requestIdentifier = this.$refs.requestIdentifier.value;
       const column_name = this.idPicked;
+      const db_env = this.dbEnv[0];
       console.log('column name', column_name);
       this.isLoading = true;
       await axios
-        .post('http://localhost:5500/aisDetails/' + requestIdentifier, {
+        .post('http://localhost:5500/request-details/' + requestIdentifier, {
           column_name: column_name,
+          db_name: db_env,
         })
         .then((response) => {
           this.content = response;
           console.log(response);
-          this.checkTransaction();
+          if (this.content.data[0]) {
+            this.checkTransaction();
+          }
         })
         .catch((e) => console.log(e))
         .finally((data) => console.log(data));
@@ -201,11 +222,15 @@ export default {
     },
 
     async checkTransaction() {
+      const db_env = this.dbEnv[0];
       await axios
         .post(
-          'http://localhost:5500/transactionDetails/',
-          this.content.data[0].REFERENCE_ID,
-          { table_name: this.content.data[0].REFERENCE_ID_TYPE }
+          'http://localhost:5500/transaction-details/' +
+            this.content.data[0].REFERENCE_ID,
+          {
+            table_name: this.content.data[0].REFERENCE_ID_TYPE,
+            db_name: db_env,
+          }
         )
         .then((response) => {
           this.transactionDetails = response;
@@ -221,7 +246,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import url('https://fonts.googleapis.com/css?family=Ubuntu:ital,wght@0.300;0,400;0,500;0,700;1,400;1,500;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,400;1,500;1,700&display=swap');
 
 #app {
   font-family: 'Ubuntu', sans-serif;
@@ -253,7 +278,7 @@ h1 {
   }
   span {
     color: red;
-    text-decoration: none;
+    // text-decoration: none;
   }
 }
 
@@ -284,10 +309,14 @@ section {
     justify-content: flex-start;
     align-items: center;
     padding: 1rem 1.5rem 0.5rem 2rem;
+    input,
+    label {
+      cursor: pointer;
+    }
   }
   .event-type-container {
     // display: flex;
-    top: Opx;
+    top: 0px;
     position: sticky;
     // justify-content: flex-start;
     margin: 1rem 2rem;
@@ -309,7 +338,7 @@ section {
       font-family: 'Courier Prime', monospace;
       font-size: 15px;
       list-style-type: none;
-      // line-height: 0:
+      // line-height: 0;
       // margin: 0 0 4px 0;
     }
   }
@@ -341,11 +370,11 @@ section {
   border-radius: 8px;
   background-color: #181e22;
 }
-.main-input focus,
+.main-input:focus,
 select:focus {
   outline: none;
   border-color: #3db2ff;
-  box-shadow: 2px 8px #3db2ff;
+  box-shadow: 0 2px 8px #3db2ff;
   transition: 0.5s;
   background-color: #181e22;
 }
@@ -390,7 +419,7 @@ height: 44px;
 -webkit-appearance: none;
 -moz-appearance: none;
 appearance: none;
-background: urlhttps://stackoverflow.com/favicon.ico) 96% / 15% no-repeat*/
+background: url(https://stackoverflow.com/favicon.ico) 96% / 15% no-repeat*/
   /* #eee;*/
 }
 /* CAUTION: Internet Explorer hackery ahead */

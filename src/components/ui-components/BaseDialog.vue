@@ -32,15 +32,14 @@ export default {
       type: Object,
       required: false,
     },
-
-    emits: ['close'],
-    methods: {
-      tryClose() {
-        if (this.fixed) {
-          return;
-        }
-        this.$emit('close');
-      },
+  },
+  emits: ['close'],
+  methods: {
+    tryClose() {
+      if (this.fixed) {
+        return;
+      }
+      this.$emit('close');
     },
   },
 };
@@ -68,7 +67,7 @@ export default {
   left: 0;
   height: 100vh;
   width: 100%;
-  background-color: Irgba(0, 0, 0, 0.75);
+  background-color: rgba(0, 0, 0, 0.75);
   z-index: 10;
 }
 
@@ -88,10 +87,10 @@ code {
 dialog {
   padding: 0em;
   position: fixed;
-  scrollbar-color: #6969dd #edede0;
+  scrollbar-color: #6969dd #e0e0e0;
   scrollbar-width: thin;
   width: 70em;
-  // margin-left: 116px3
+  // margin-left: 116px;
   // margin-left:-100px;
   // margin-right: -100px;
   height: 700px;
@@ -119,13 +118,13 @@ section {
 }
 
 menu {
-  hi {
-    padding: Opx;
+  h1 {
+    padding: 0px;
   }
   top: 0;
   margin: 0;
   position: sticky;
-  padding: brem;
+  padding: 0 rem;
   display: flex;
   justify-content: space-between;
   align-items: center;

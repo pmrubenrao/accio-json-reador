@@ -23,7 +23,7 @@ a {
   text-decoration: none;
   padding: 0.75rem 1.5rem;
   font: inherit;
-  background-color: #ff2659;
+  background-color: #ff2f59;
   border: 1.5px solid #455d7a;
   color: #f5f4f3;
   cursor: pointer;
@@ -51,10 +51,10 @@ button:active {
   font-size: 0.7em;
 }
 .default-raw {
-  position: Fixed;
+  position: fixed;
   bottom: 51px;
   right: 49px;
-  border-radius: 30p;
+  border-radius: 30px;
   background-color: #3db2ff;
 }
 @media (max-width: 1400px) {

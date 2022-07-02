@@ -19,19 +19,19 @@
 </template>
 
 <script>
-import BaseButton from './ui-components/BaseButton.vue';
+// import BaseButton from './ui-components/BaseButton.vue';
 import BaseCard from './ui-components/BaseCard.vue';
 import groupedFieldsTemplate from '../../assets/groupedFields.js';
 import structuredClone from '@ungap/structured-clone';
 
 export default {
-  components: { BaseButton, BaseCard },
+  components: { BaseCard },
   props: {
     eventType: String,
     eventTypeJson: {
       type: Object,
-      componentKey: Number,
     },
+    componentKey: Number,
   },
 
   data() {
@@ -48,8 +48,6 @@ export default {
   methods: {
     getData() {
       this.eventExtracter(this.eventTypeJson);
-      this.groupedEvent();
-
       this.groupedEvent();
     },
 
@@ -74,7 +72,7 @@ export default {
         ) {
           this.eventExtracter(jsonResponseObject[k]);
         } else {
-          this.Fields[k.toUpperCase()] = jsonResponseObject[k];
+          this.fields[k.toUpperCase()] = jsonResponseObject[k];
         }
       }
     },
@@ -95,7 +93,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import url('https://fonts.googleapis.com/css2?family-Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display-swap');
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
 body {
   p {
@@ -117,7 +115,7 @@ pre {
 
   grid-template-rows: repeat(4, auto);
   grid-template-columns: repeat(2, 1fr);
-  // grid-template-rows: 50px 1fr 1fr:
+  // grid-template-rows: 50px 1fr 1fr;
 
   // background: rgb(255, 255, 255) ;
   // height: 700px;
@@ -131,7 +129,7 @@ pre {
     // font-size: 12px;
     list-style-type: none;
     // line-height: 0;
-    // margin: 0 0 Apx 0;
+    // margin: 0 0 4px 0;
   }
 
   .bang-container-list {

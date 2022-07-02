@@ -1,6 +1,6 @@
 <template>
   <section>
-    <base-button @click="showHide" mode="eventTable"
+    <base-button @click="showHide" :mode="eventTable"
       >{{ isActive ? 'Show' : 'Hide' }}
     </base-button>
 
@@ -40,9 +40,9 @@ export default {
   props: {
     contentData: {
       type: Object,
-      default() {
-        return { event1: 'date' };
-      },
+      // default() {
+      //   return { event1: 'date' };
+      // },
     },
   },
 
@@ -98,7 +98,7 @@ export default {
           minute: '2-digit',
           second: '2-digit',
         }) +
-        'CET'
+        ' CET'
       );
     },
   },
@@ -125,11 +125,11 @@ table {
     color: #919ba3;
     font-size: 0.875rem;
     text-transform: uppercase;
-    letter-spacing: 28;
+    // letter-spacing: 2%;
   }
 }
 .table-view {
-  margin: Opx;
+  margin: 0px;
   caption-side: bottom;
   color: rgb(174, 170, 170);
   letter-spacing: 1px;
