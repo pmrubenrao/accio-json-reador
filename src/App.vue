@@ -105,7 +105,6 @@
       <event-type-extracter
         :key="componentKey"
         :event-type="eventType"
-        :event-template="eventTemplate"
         :event-type-json="eventTypeJson"
         class="transaction-detail-container"
       >
@@ -168,7 +167,8 @@ export default {
             return false;
           }
         });
-        this.eventTypeJson = JSON.parse(this.eventTypeJson[0].ADDITIONAL_DATA);
+        // this.eventTypeJson = JSON.parse(this.eventTypeJson[0].ADDITIONAL_DATA);
+        this.eventTypeJson = this.eventTypeJson[0].ADDITIONAL_DATA;
         self.componentKey += 1;
       },
       deep: true,
@@ -213,7 +213,8 @@ export default {
           this.content = response;
           console.log(response);
           if (this.content.data[0]) {
-            this.checkTransaction();
+            // this.checkTransaction();
+            null;
           }
         })
         .catch((e) => console.log(e))

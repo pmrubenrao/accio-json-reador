@@ -94,7 +94,7 @@ dialog {
   // margin-left:-100px;
   // margin-right: -100px;
   height: 700px;
-  margin-top: -300px;
+  margin-top: -246px;
   z-index: 10000000;
   border: none;
   border-radius: 8px;
@@ -150,7 +150,7 @@ menu {
   dialog {
     width: 61em;
     height: 611px;
-    margin-top: -350px;
+    margin-top: -246px;
     font-size: 12px;
   }
 }

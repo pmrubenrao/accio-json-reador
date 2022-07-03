@@ -1,9 +1,12 @@
 const groupedFieldsTemplate = {
   BASIC_INFORMATION: {
-    DUMMY1: undefined,
+    NAME: undefined,
+    EMAIL: undefined,
+    COMPANY: undefined,
   },
-  BASIC_INFORMATION1: {
-    DUMMY1: undefined,
+  LOCATION: {
+    LAT: undefined,
+    LONG: undefined,
   },
 };
 

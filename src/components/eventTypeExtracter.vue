@@ -42,7 +42,8 @@ export default {
   },
 
   mounted() {
-    this - getData();
+    console.log(this.eventTypeJson);
+    this.getData();
   },
 
   methods: {
